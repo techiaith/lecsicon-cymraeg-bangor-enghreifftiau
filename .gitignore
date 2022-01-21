@@ -1,0 +1,5 @@
+lecsicon_cc0.txt
+*.tsv
+*.pyc
+*~
+__pycache__
