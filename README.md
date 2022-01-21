@@ -1,4 +1,4 @@
-# Enghreifftiau o defnyddio Lecsion Cymraeg Bangor 
+# Enghreifftiau defnyddio Lecsion Cymraeg Bangor 
 
 Mae'r gronfa cod yma yn arddangos beth ellir ei ddatblygu gyda [Lescicon Cymraeg Prifysgol Bangor](https://github.com/techiaith/lecsicon-cymraeg-bangor).
 
