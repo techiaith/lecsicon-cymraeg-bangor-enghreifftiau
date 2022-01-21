@@ -1,15 +1,15 @@
-# Enghreifftiau o defnyddio Lecsion CC0 Cymraeg Prifysgol Bangor 
+# Enghreifftiau o defnyddio Lecsion Cymraeg Bangor 
 
-Mae'r gronfa cod yma ar gyfer arddangos beth ellir ei ddatblygu gyda [Lescicon Cymraeg Bangor](https://github.com/techiaith/lecsicon-cymraeg-bangor).
+Mae'r gronfa cod yma yn arddangos beth ellir ei ddatblygu gyda [Lescicon Cymraeg Prifysgol Bangor](https://github.com/techiaith/lecsicon-cymraeg-bangor).
 
-Mae hefyd o ddiddordeb i unrhyw un sydd eisio dysgu codio ac/neu dysgu Cymraeg neu i ddatblygu unrhyw beth newydd ar gyfer y Gymraeg. 
+Mae hefyd o ddiddordeb i unrhyw un sydd eisio dysgu codio (Python) ac/neu ddysgu Cymraeg neu i ddatblygu unrhyw beth newydd ar gyfer y Gymraeg. 
 
-Mae pedwar prif sgript arddangos:
+Mae pedwar prif sgript sgript enghreifftiol:
 
  - gwirydd sillafu
  - morffoleg
  - lemateiddiwr
- - gêm Wordle Cymraeg
+ - gÃªm Wordle Cymraeg
 
 
 
@@ -67,31 +67,11 @@ Rhowch eiriau i'w lemmateiddio
 ('cloi', 'VERB', {'Mood': 'Ind', 'Number': 'Sing', 'Person': '3', 'Tense': 'Pres'})
 ```
 
-### Gêm Wordle Cymraeg
+### GÃªm Wordle Cymraeg
 
-Bydd angen gosod `termcolor` yn gyntaf cyn rhedeg y sgript gêm Wordle. 
+Bydd angen gosod `termcolor` yn gyntaf cyn rhedeg y sgript gÃªm Wordle. 
 
-Mae'r gêm yn defnyddio rhestr o'r geiriau mwyaf aml y Gymraeg er mwyn cynnig eiriau 5 lythyren haws. Er gellir addasu'r sgript i'w wneud yn anoddach neu'n haws, yn ogystal a newid y nifer o lythrennau. Defnyddir deugraffau yr wyddor Cymraeg (h.y. 'ch', 'll') 
+Mae'r gÃªm yn defnyddio rhestr o'r geiriau mwyaf aml y Gymraeg er mwyn cynnig eiriau 5 lythyren haws. Er gellir addasu'r sgript i'w wneud yn anoddach neu'n haws, yn ogystal a newid y nifer o lythrennau. Defnyddir deugraffau yr wyddor Cymraeg (h.y. 'ch', 'll') 
  
-
-```
-PS C:\Users\cbsc04\github\lecsicon-cymraeg-bangor-enghreifftiau> python3 .\wordle.py
-Llwytho'r geirfa...
-Llwytho'r amlder geiriau i lawr..
-100% [..............................................................................] 32830 / 32830
-
-Byddwch barod i chwarae Wordle Cymraeg....
-
-1 > torri
-1/6  t   o   r   r   i
-
-2 > wisgo
-2/6  w   i   s   g   o
-
-3 > gwisg
-3/6  g   w   i   s   g
-
-Llongyfarchiadau mawr!! 3/6 : gwisg
-
-```
+![delwedd](https://user-images.githubusercontent.com/8668769/150603899-17e3e038-aaf3-440d-bba6-9a15b5236da4.png)
 
