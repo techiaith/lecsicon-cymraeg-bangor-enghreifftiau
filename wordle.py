@@ -65,7 +65,7 @@ if __name__ == "__main__":
     print ("Byddwch barod i chwarae Wordle Cymraeg....")
     try:
         word = choose_random_word(l,f)
-        print (word)
+        #print (word)
 
         success=False
         for attempt in range(1,7):
