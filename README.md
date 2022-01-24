@@ -73,5 +73,6 @@ Bydd angen gosod `termcolor` yn gyntaf cyn rhedeg y sgript gêm Wordle.
 
 Mae'r gêm yn defnyddio rhestr o'r geiriau mwyaf aml y Gymraeg er mwyn cynnig eiriau 5 lythyren haws. Er gellir addasu'r sgript i'w wneud yn anoddach neu'n haws, yn ogystal a newid y nifer o lythrennau. Defnyddir deugraffau yr wyddor Cymraeg (h.y. 'ch', 'll') 
  
-![delwedd](https://user-images.githubusercontent.com/8668769/150603899-17e3e038-aaf3-440d-bba6-9a15b5236da4.png)
+![delwedd](https://user-images.githubusercontent.com/8668769/150759601-4d1d8caf-3f61-410d-a089-12604cf10296.png)
+
 
