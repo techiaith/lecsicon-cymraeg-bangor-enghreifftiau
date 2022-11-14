@@ -1,4 +1,5 @@
 import os
+import re
 import wget
 
 from os import listdir
@@ -9,6 +10,11 @@ import trie
 
 LEXICON_URL='https://raw.githubusercontent.com/techiaith/lecsicon-cymraeg-bangor/main/lecsicon_cc0.zip'
 LEXICON_FILENAME='lecsicon_cc0.txt'
+# Lemmas for which rh/ng should be split
+# TODO: include lowercase words that aren't five letters/potentially five letters
+# TODO: may need to include some of the following:
+# Angefin Bodringallt Brengain Ingli Langro Llandingad Llanddingad Pinged Tangwen Tangwyn Trerhedyn
+SPLIT_NG_RH = ['Abergwyngregyn', 'Aberhafesb', 'Aberhigian', 'Aberhonddu', 'Aberhosan', 'Angliad', 'Anglican', 'Anglicanaidd', 'Angola', 'Bangladesh', 'Bangor', 'Bengal', 'Blaengarw', 'Blaengwrach', 'Blaengwynfi', 'Brongest', 'Bronglais', 'Bryngarn', 'Bryngwran', 'Bryngwyn', 'Caerhirfryn', 'Carngowil', 'Carnguwch', 'Carngwcw', 'Cefngorwydd', 'Cilmaengwyn', 'Congo', 'Cryngae', 'Felinganol', 'Ffynnongroyw', 'Garthbrengi', 'Gilfachyrheol', 'Glangors', 'Grongaer', 'Hengastell', 'Hengoed', 'Hengwm', 'Hengwrt', 'Hwngaraidd', 'Hwngareg', 'Hwngari', 'Lingoed', 'Llanengan', 'Llangadfan', 'Llangadog', 'Llangadwaladr', 'Llangaffo', 'Llangamarch', 'Llangammarch', 'Llangan', 'Llanganten', 'Llangar', 'Llangarron', 'Llangasty', 'Llangatwg', 'Llangathen', 'Llangedwyn', 'Llangefni', 'Llangeinwen', 'Llangeinwyr', 'Llangeitho', 'Llangeler', 'Llangelynnin', 'Llangennech', 'Llangenni', 'Llangennith', 'Llangernyw', 'Llangewydd', 'Llangian', 'Llangïan', 'Llangiwa', 'Llangloffan', 'Llanglydwen', 'Llangoed', 'Llangoedmor', 'Llangofen', 'Llangolman', 'Llangollen', 'Llangorwen', 'Llangrallo', 'Llangrannog', 'Llangristiolus', 'Llangrwyne', 'Llangunllo', 'Llangurig', 'Llangwm', 'Llangwnnadl', 'Llangwyfan', 'Llangwyllog', 'Llangwyryfon', 'Llangybi', 'Llangyfelach', 'Llangyfiw', 'Llangyndeyrn', 'Llangynfelyn', 'Llangynhafal', 'Llangynidr', 'Llangynin', 'Llangynllo', 'Llangynnwr', 'Llangynog', 'Llangynwyd', 'Llangynydd', 'Llangynyw', 'Llangystennin', 'Llangywer', 'Llanfairpwllgwyngyll', 'Llwyngroes', 'Llwyngwair', 'Llwyngwern', 'Maengwyn', 'Melingriffith', 'Mongolia', 'Myngul', 'Pengelli', 'Penglais', 'Pengorffwysfa', 'Pengrynwr', 'Pengwern', 'Penybenglog', 'Penyrheol', 'Penyrheolgerrig', 'Penyrherber', 'Singrug', 'Sirhywi', 'Tafarngelyn', 'Tanganyika', 'Tongwynlais', 'Tringarth', 'Ynysymaengwyn', 'arholi', 'bingo', 'byrhau', 'cwango', 'dengar', 'dyfrhau', 'genglo', 'glingam', 'gorhoffi', 'gwarhau', 'hwyrhau', 'ingot', 'jingo', 'jyngl', 'lingri', 'llengar', 'llengig', 'llwfrhau', 'manglo', 'mango', 'mawrhau', 'mingam', 'parhad', 'parhau', 'pengoch', 'rhangor', 'sarhad', 'sarhau', 'sbangl', 'sicrhau', 'siwrhau', 'tango', 'ungell', 'ungnwd', 'ungorn']
 
 
 class Lexicon(object):
@@ -86,34 +92,23 @@ class Lexicon(object):
         self.wordform_lookup[wordform].append((lemma, pos, features))
         self.lemma_lookup[lemma].append((wordform,pos,features))
 
-    def generate_spelling(self, wordform):
-        result=[]
-        digraphs = ['ch','dd','ff','ng','ll','ph','rh','th']
+    def generate_spelling(self, wordform, lemma=None):
+        """Split a word into an array of Welsh letters
 
-        l = len(wordform)
-        skip=False
+        Welsh digraphs are written using two Latin letters, but are considered to be a single
+        letters for many purposes. Ch, dd, ff, ll, ph and th are always digraphs. But ng and
+        rh are usually digraphs, but not always. This method uses a list of exceptions
+        where they are not digraphs.
 
-        for c in range(l):
-
-            if skip:
-                skip=False
-                continue
-
-            ch = wordform[int(c)]
-            nch=''
-            if c<l-1:
-                nch = wordform[c+1]
-
-            for dg in digraphs:
-                if ch==dg[0] and nch==dg[1]:
-                    result.append(dg)
-                    skip=True
-                    break
-
-            if skip==False:
-                result.append(wordform[c])
-
-        return result
+        wordform - The word to split, e.g. 'ffenestri'
+        lemma - The root form of the word, e.g. 'ffenestr'
+        Returns the letters, e.g. [ 'ff', 'e', 'n', 'e', 's', 't', 'r', 'i' ]
+        """
+        if lemma in SPLIT_NG_RH:
+            letters = re.findall('ch|dd|ff|ll|ph|th|.', wordform, re.IGNORECASE)
+        else:
+            letters = re.findall('ch|dd|ff|ng|ll|ph|rh|th|.', wordform, re.IGNORECASE)
+        return letters
 
     def initialise_spellings_cache(self):
 
