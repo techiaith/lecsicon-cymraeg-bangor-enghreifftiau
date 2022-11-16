@@ -10,10 +10,17 @@ if __name__ == "__main__":
     try:
         while True:
             candidate = input('> ')
-            s = l.contains(candidate)
+            lemma_records = l.get_lemmas(candidate)
+
+            if len(lemma_records) == 0:
+                s = False
+            else:
+                s = True
             print (s)
             if s:
-                print (l.generate_spelling(candidate))
+                first_record = lemma_records[0]
+                lemma = first_record[0]
+                print (l.generate_spelling(candidate, lemma))
         
     except KeyboardInterrupt:
         pass 
