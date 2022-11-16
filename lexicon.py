@@ -1,15 +1,16 @@
 import os
+import re
 import wget
 
 from os import listdir
 from zipfile import ZipFile
 from collections import defaultdict
 
+import digraphs
 import trie
 
 LEXICON_URL='https://raw.githubusercontent.com/techiaith/lecsicon-cymraeg-bangor/main/lecsicon_cc0.zip'
 LEXICON_FILENAME='lecsicon_cc0.txt'
-
 
 class Lexicon(object):
 
@@ -86,34 +87,19 @@ class Lexicon(object):
         self.wordform_lookup[wordform].append((lemma, pos, features))
         self.lemma_lookup[lemma].append((wordform,pos,features))
 
-    def generate_spelling(self, wordform):
-        result=[]
-        digraphs = ['ch','dd','ff','ng','ll','ph','rh','th']
+    def generate_spelling(self, wordform, lemma=None):
+        """Split a word into an array of Welsh letters
 
-        l = len(wordform)
-        skip=False
+        Welsh digraphs are written using two Latin letters, but are considered to be a single
+        letters for many purposes. Ch, dd, ff, ll, ph and th are always digraphs. But ng and
+        rh are usually digraphs, but not always. This method uses a list of exceptions
+        where they are not digraphs.
 
-        for c in range(l):
-
-            if skip:
-                skip=False
-                continue
-
-            ch = wordform[int(c)]
-            nch=''
-            if c<l-1:
-                nch = wordform[c+1]
-
-            for dg in digraphs:
-                if ch==dg[0] and nch==dg[1]:
-                    result.append(dg)
-                    skip=True
-                    break
-
-            if skip==False:
-                result.append(wordform[c])
-
-        return result
+        wordform - The word to split, e.g. 'ffenestri'
+        lemma - The root form of the word, e.g. 'ffenestr'
+        Returns the letters, e.g. [ 'ff', 'e', 'n', 'e', 's', 't', 'r', 'i' ]
+        """
+        return digraphs.split_word(wordform, lemma)
 
     def initialise_spellings_cache(self):
 
